@@ -1,0 +1,39 @@
+
+
+<!--Nav bar-->
+<div class="navbar navbar-app navbar-absolute-top">
+
+  <div class="navbar-brand navbar-brand-center">
+    chicken or bread?
+  </div>
+
+  <div class="btn-group pull-left">
+    <div class="btn btn-navbar">
+      create
+    </div>
+  </div>
+
+  <div class="btn-group pull-right">
+    <div class="btn btn-navbar">
+      find game
+    </div>
+  </div>
+</div>
+
+<div class="game-container">
+  <div class="left-drop" ng-drop="true" ng-drop-success="onDrop('left')">
+   <div class="left-item-label"> {{leftItem()}}</div>
+  </div>
+  <div class="result">
+    {{resultMessage()}}
+  </div>
+  <div class="image-container" ng-class="imageClass()" ng-drag="true" ng-data="obj" ng-show="showImage" ng-drag-begin="onDragBegin()" ng-drag-finish="onDragEnd()" >
+    <img class="image" ng-src="{{imagePath()}}" />
+  </div>
+
+
+  <div class="right-drop" ng-drop="true" ng-drop-success="onDrop('right')">
+    <div class="right-item-label"> {{rightItem()}}</div>
+  </div>
+  <div class="clear" />
+</div>
