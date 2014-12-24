@@ -14,7 +14,7 @@ var methodOverride = require('method-override'); // simulate DELETE and PUT (exp
 
 mongoose.connect('mongodb://localhost:27017'); // connect to mongoDB database on modulus.io
 
-app.use(express.static(__dirname + '/app')); // set the static files location /public/img will be /img for users
+app.use(express.static(__dirname + '/www')); // set the static files location /public/img will be /img for users
 app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser.urlencoded({
     'extended': 'true'
@@ -27,45 +27,36 @@ app.use(methodOverride());
 
 
 // define model =================
+var Schema = mongoose.Schema,
+    ObjectId = Schema.ObjectId;
+
+//Games
 var Game = mongoose.model('Game', {
-    item1: String,
-    item2: String,
-    imageUrl: String
+    imageUrl: String,
+    correctItem: String,
+    incorrectItem: String,
 });
 
-// routes ======================================================================
-
-// api ---------------------------------------------------------------------
-// get all todos
+//get games
 app.get('/api/games', function(req, res) {
-
-    // use mongoose to get all todos in the database
     Game.find(function(err, games) {
-
-        // if there is an error retrieving, send the error. nothing after res.send(err) will execute
         if (err) {
             res.send(err);
         }
-
-
-        res.json(games); // return all todos in JSON format
+        res.json(games);
     });
 });
 
-// create todo and send back all todos after creation
+//add game
 app.post('/api/games', function(req, res) {
-
-    // create a todo, information comes from AJAX request from Angular
     Game.create({
-        item1: req.body.item1,
-        item2: req.body.item2,
-        imageUrl: req.body.imageUrl
+        imageUrl: req.body.imageUrl,
+        correctItem: req.body.correctItem,
+        incorrectItem: req.body.incorrectItem,
     }, function(err, game) {
         if (err) {
             res.send(err);
         }
-
-        // get and return all the todos after you create another
         Game.find(function(err, games) {
             if (err) {
                 res.send(err);
@@ -76,7 +67,7 @@ app.post('/api/games', function(req, res) {
 
 });
 
-// delete a todo
+//remove game
 app.delete('/api/games/:game_id', function(req, res) {
     Game.remove({
         _id: req.params.game_id
@@ -84,8 +75,6 @@ app.delete('/api/games/:game_id', function(req, res) {
         if (err) {
             res.send(err);
         }
-
-        // get and return all the todos after you create another
         Game.find(function(err, game) {
             if (err) {
                 res.send(err);
@@ -93,6 +82,214 @@ app.delete('/api/games/:game_id', function(req, res) {
             res.json(game);
         });
     });
+});
+
+//Users
+var User = mongoose.model('User', {
+    name: String,
+    password: String,
+    friends: [ObjectId],
+    userGames: [ObjectId],
+    receivedGames: [ObjectId],
+    receivedRequests: [ObjectId],
+    sentRequests: [ObjectId]
+});
+
+//create user
+app.post('/api/users', function(req, res) {
+    User.create({
+        name: req.body.name,
+        password: req.body.password,
+        friends: [],
+        userGames: [],
+        receivedGames: [],
+        receivedRequests: [],
+        sentRequests: []
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        } else {
+            res.send(null);
+        }
+    });
+});
+
+//login
+app.put('/api/users', function(req, res) {
+    User.findOne({
+        'name': req.body.name
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if (user) {
+            // doc may be null if no document matched
+            if (user.password === req.body.password) {
+                res.send(user);
+            } else {
+                res.send({
+                    error: 'incorrect password'
+                });
+            }
+        } else {
+            res.send({
+                error: 'user not found'
+            });
+        }
+    });
+});
+
+// get user
+app.get('/api/users/:user_id', function(req, res) {
+    User.findOne({
+        _id: req.params.user_id
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if (user) {
+            // doc may be null if no document matched
+            res.send(user);
+        } else {
+            res.send({
+                error: 'user not found'
+            });
+        }
+    });
+});
+
+//get user games
+app.get('/api/users/:user_id/user_games', function(req, res) {
+    User.findOne({
+        _id: req.params.user_id
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if (user) {
+            // doc may be null if no document matched
+            //IF THE CURRENT USER OR A FRIEND OF CURRENT USER
+            res.send(user.userGames);
+        } else {
+            res.send({
+                error: 'user not found'
+            });
+        }
+    });
+});
+
+
+// get recieved games
+app.get('/api/users/:user_id/received_games', function(req, res) {
+    User.findOne({
+        _id: req.params.user_id
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if (user) {
+            // doc may be null if no document matched
+            res.send(user.receivedGames);
+        } else {
+            res.send({
+                error: 'user not found'
+            });
+        }
+    });
+});
+
+//get friends
+app.get('/api/users/:user_id/friends', function(req, res) {
+    User.findOne({
+        _id: req.params.user_id
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if (user) {
+            // doc may be null if no document matched
+            res.send(user.friends);
+        } else {
+            res.send({
+                error: 'user not found'
+            });
+        }
+    });
+});
+
+//get sent friend requests
+app.get('/api/users/:user_id/sent_requests', function(req, res) {
+    User.findOne({
+        _id: req.params.user_id
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if (user) {
+            // doc may be null if no document matched
+            res.send(user.sentRequests);
+        } else {
+            res.send({
+                error: 'user not found'
+            });
+        }
+    });
+});
+
+//get received friend requests
+app.get('/api/users/:user_id/received_requests', function(req, res) {
+    User.findOne({
+        _id: req.params.user_id
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if (user) {
+            // doc may be null if no document matched
+            res.send(user.receivedRequests);
+        } else {
+            res.send({
+                error: 'user not found'
+            });
+        }
+    });
+});
+
+//send friend request
+app.post('/api/users/:user_id', function(req, res) {
+    User.findByIdAndUpdate(
+        req.params.user_id, {
+            $push: {
+                'sentRequests': req.body.friend_id
+            }
+        }, {
+            safe: true,
+            upsert: true
+        },
+        function(err, model) {
+            if (err) {
+                res.send(err);
+            } else {
+                User.findByIdAndUpdate(
+                    req.body.friend_id, {
+                        $push: {
+                            'receivedRequests': req.params.user_id
+                        }
+                    }, {
+                        safe: true,
+                        upsert: true
+                    },
+                    function(err, model) {
+                        if (err) {
+                            res.send(err);
+                        } else {
+                            res.send(null);
+                        }
+                    }
+                );
+            }
+        }
+    );
 });
 
 
