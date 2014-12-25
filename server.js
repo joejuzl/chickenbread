@@ -256,7 +256,7 @@ app.get('/api/users/:user_id/received_requests', function(req, res) {
 });
 
 //send friend request
-app.post('/api/users/:user_id', function(req, res) {
+app.post('/api/users/:user_id/send_request', function(req, res) {
     User.findByIdAndUpdate(
         req.params.user_id, {
             $push: {
@@ -274,6 +274,49 @@ app.post('/api/users/:user_id', function(req, res) {
                     req.body.friend_id, {
                         $push: {
                             'receivedRequests': req.params.user_id
+                        }
+                    }, {
+                        safe: true,
+                        upsert: true
+                    },
+                    function(err, model) {
+                        if (err) {
+                            res.send(err);
+                        } else {
+                            res.send(null);
+                        }
+                    }
+                );
+            }
+        }
+    );
+});
+
+//accept friend request
+app.post('/api/users/:user_id/accept_request', function(req, res) {
+    User.findByIdAndUpdate(
+        req.params.user_id, {
+            $pull: {
+                'receivedRequests': req.body.friend_id
+            },
+            $push: {
+                'friends': req.body.friend_id
+            }
+        }, {
+            safe: true,
+            upsert: true
+        },
+        function(err, model) {
+            if (err) {
+                res.send(err);
+            } else {
+                User.findByIdAndUpdate(
+                    req.body.friend_id, {
+                        $pull: {
+                            'sentRequests': req.params.user_id
+                        },
+                        $push: {
+                            'friends': req.params.user_id
                         }
                     }, {
                         safe: true,
