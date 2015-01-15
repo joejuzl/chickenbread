@@ -1,0 +1,21 @@
+<ion-view title="login">
+    <ion-content class="padding">
+        <br/>
+        <br/>
+
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">username</span>
+                <input ng-model="$parent.username" type="text">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">password</span>
+                <input ng-model="$parent.password" type="password">
+            </label>
+        </div>
+        <button ng-click="onClick()" class="button button-positive button-block">
+            login
+        </button>
+
+    </ion-content>
+</ion-view>

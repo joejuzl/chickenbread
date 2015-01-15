@@ -1,14 +1,28 @@
-item1
-<input type="text" ng-model="item1">item2
-<input type="text" ng-model="item2">imageUrl
-<input type="text" ng-model="image">
-</br>
-<input name="left" type="radio" ng-model="left" ng-value="{{true}}">
-<input name="left" type="radio" ng-model="left" ng-value="{{false}}"/>
-</br>
-<button class="button" ng-click="submit()">
-  Submit
-</button>
-<button class="button" ng-click="beginGame()">
-  Begin Game
-</button>
+<ion-view title="create">
+    <ion-content class="padding">
+        <br/>
+        <br/>
+
+        <div class="list">
+            <label class="item item-input">
+                <span class="input-label">image url</span>
+                <input ng-model="$parent.url" type="text">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">is a...</span>
+                <input ng-model="$parent.is" type="text">
+            </label>
+            <label class="item item-input">
+                <span class="input-label">is not a...</span>
+                <input ng-model="$parent.not" type="text">
+            </label>
+        </div>
+
+        <button ng-click="onClick()" class="button button-positive button-block">
+            create
+        </button>
+
+        <p>{{message}}</p>
+
+    </ion-content>
+</ion-view>

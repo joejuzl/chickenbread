@@ -37,13 +37,33 @@ var Game = mongoose.model('Game', {
     incorrectItem: String,
 });
 
-//get games
-app.get('/api/games', function(req, res) {
-    Game.find(function(err, games) {
+//Users
+var User = mongoose.model('User', {
+    name: String,
+    password: String,
+    friends: [ObjectId],
+    userGames: [ObjectId],
+    receivedGames: [ObjectId],
+    receivedRequests: [ObjectId],
+    sentRequests: [ObjectId]
+});
+
+//get game
+app.get('/api/games/:game_id', function(req, res) {
+    Game.findOne({
+        _id: req.params.game_id
+    }, function(err, game) {
         if (err) {
             res.send(err);
         }
-        res.json(games);
+        if (game) {
+            // doc may be null if no document matched
+            res.send(game);
+        } else {
+            res.send({
+                error: 'game not found'
+            });
+        }
     });
 });
 
@@ -57,12 +77,24 @@ app.post('/api/games', function(req, res) {
         if (err) {
             res.send(err);
         }
-        Game.find(function(err, games) {
-            if (err) {
-                res.send(err);
+        User.findByIdAndUpdate(
+            req.body.user_id, {
+                $push: {
+                    'userGames': game._id
+                }
+            }, {
+                safe: true,
+                upsert: true
+            },
+            function(err, user) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send(user.userGames);
+                }
             }
-            res.json(games);
-        });
+        );
+
     });
 
 });
@@ -84,32 +116,35 @@ app.delete('/api/games/:game_id', function(req, res) {
     });
 });
 
-//Users
-var User = mongoose.model('User', {
-    name: String,
-    password: String,
-    friends: [ObjectId],
-    userGames: [ObjectId],
-    receivedGames: [ObjectId],
-    receivedRequests: [ObjectId],
-    sentRequests: [ObjectId]
-});
 
 //create user
 app.post('/api/users', function(req, res) {
-    User.create({
-        name: req.body.name,
-        password: req.body.password,
-        friends: [],
-        userGames: [],
-        receivedGames: [],
-        receivedRequests: [],
-        sentRequests: []
+    User.findOne({
+        'name': req.body.name
     }, function(err, user) {
         if (err) {
             res.send(err);
+        }
+        if (user) {
+            res.send({
+                error: 'user already exists'
+            });
         } else {
-            res.send(null);
+            User.create({
+                name: req.body.name,
+                password: req.body.password,
+                friends: [],
+                userGames: [],
+                receivedGames: [],
+                receivedRequests: [],
+                sentRequests: []
+            }, function(err, user) {
+                if (err) {
+                    res.send(err);
+                } else {
+                    res.send(user);
+                }
+            });
         }
     });
 });
@@ -124,7 +159,7 @@ app.put('/api/users', function(req, res) {
         }
         if (user) {
             // doc may be null if no document matched
-            if (user.password === req.body.password) {
+            if (user.password == req.body.password) {
                 res.send(user);
             } else {
                 res.send({
@@ -153,6 +188,25 @@ app.get('/api/users/:user_id', function(req, res) {
         } else {
             res.send({
                 error: 'user not found'
+            });
+        }
+    });
+});
+
+// search user by name
+app.put('/api/users/:user_name', function(req, res) {
+    User.findOne({
+        name: req.params.user_name
+    }, function(err, user) {
+        if (err) {
+            res.send(err);
+        }
+        if (user) {
+            // doc may be null if no document matched
+            res.send(user);
+        } else {
+            res.send({
+                error: 'no matches for that username'
             });
         }
     });
@@ -256,6 +310,7 @@ app.get('/api/users/:user_id/received_requests', function(req, res) {
 });
 
 //send friend request
+//CHECK IF ALREADY FRIEND?
 app.post('/api/users/:user_id/send_request', function(req, res) {
     User.findByIdAndUpdate(
         req.params.user_id, {
@@ -266,7 +321,7 @@ app.post('/api/users/:user_id/send_request', function(req, res) {
             safe: true,
             upsert: true
         },
-        function(err, model) {
+        function(err, user) {
             if (err) {
                 res.send(err);
             } else {
@@ -279,11 +334,11 @@ app.post('/api/users/:user_id/send_request', function(req, res) {
                         safe: true,
                         upsert: true
                     },
-                    function(err, model) {
+                    function(err, friend) {
                         if (err) {
-                            res.send(err);
+                            res.send(friend);
                         } else {
-                            res.send(null);
+                            res.send(user);
                         }
                     }
                 );

@@ -1,0 +1,25 @@
+<ion-view title="search">
+    <ion-content class="padding">
+        <br/>
+        <br/>
+
+        <label class="item item-input">
+            <span class="input-label">username</span>
+            <input ng-model="$parent.username" type="text">
+        </label>
+
+
+        <button ng-click="search()" class="button button-positive">
+            find
+        </button>
+        </br>
+        </br>
+        <p>{{msg}}
+            <button ng-click="addFriend()" ng-show="showAddButton" class="button button-positive">
+                add
+            </button>
+        </p>
+
+
+    </ion-content>
+</ion-view>

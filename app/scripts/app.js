@@ -17,29 +17,81 @@ angular
         'ngRoute',
         'ngSanitize',
         'ngTouch',
-        'ngDraggable',
-        'mobile-angular-ui'
     ])
-    .config(function($routeProvider) {
-        $routeProvider
-            .when('/', {
-                templateUrl: 'views/main.html',
-                controller: 'MainCtrl'
+    .config(function($urlRouterProvider, $stateProvider) {
+
+        $urlRouterProvider.otherwise('/home');
+
+        $stateProvider
+            .state('welcome', {
+                url: '/welcome',
+                templateUrl: 'views/welcome.html',
+                controller: 'WelcomeCtrl'
             })
-            .when('/game', {
-                templateUrl: 'views/game.html',
-                controller: 'GameCtrl'
+            .state('home', {
+                url: '/home',
+                templateUrl: 'views/home.html',
+                controller: 'HomeCtrl'
             })
-            .when('/create', {
+            .state('login', {
+                url: '/login',
+                templateUrl: 'views/login.html',
+                controller: 'LoginCtrl'
+            })
+            .state('signup', {
+                url: '/signup',
+                templateUrl: 'views/signup.html',
+                controller: 'SignupCtrl'
+            })
+            .state('create', {
+                url: '/create',
                 templateUrl: 'views/create.html',
                 controller: 'CreateCtrl'
             })
-            .otherwise({
-                redirectTo: '/'
+            .state('mygames', {
+                url: '/mygames',
+                templateUrl: 'views/mygames.html',
+                controller: 'MygamesCtrl'
+            })
+            .state('play', {
+                url: '/play/:game_id',
+                templateUrl: 'views/play.html',
+                controller: 'PlayCtrl'
+            })
+            .state('game', {
+                url: '/game',
+                templateUrl: 'views/game.html',
+                controller: 'GameCtrl'
+            })
+            .state('friends', {
+                url: '/friends',
+                templateUrl: 'views/friends.html',
+                controller: 'FriendsCtrl'
+            })
+            .state('myfriends', {
+                url: '/myfriends',
+                templateUrl: 'views/myfriends.html',
+                controller: 'MyfriendsCtrl'
+            })
+            .state('person', {
+                url: '/person',
+                templateUrl: 'views/person.html',
+                controller: 'PersonCtrl'
+            })
+            .state('usersearch', {
+                url: '/usersearch',
+                templateUrl: 'views/usersearch.html',
+                controller: 'UsersearchCtrl'
+            })
+            .state('requests', {
+                url: '/requests',
+                templateUrl: 'views/requests.html',
+                controller: 'RequestsCtrl'
             });
+
     })
     .constant("config", {
-        "url": "http://10.22.155.158:8080",
+        "url": "http://10.69.50.55:8080",
     });
 
 

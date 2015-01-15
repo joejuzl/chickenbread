@@ -1,0 +1,18 @@
+<ion-view title="games">
+    <ion-content class="padding">
+        <br/>
+        <br/>
+
+        <ul class="list">
+            <li ng-click="onClick($index)" class="item" ng-repeat="game in $parent.games">
+                <a class="item item-thumbnail-left" href="/#/play/{{game._id}}">
+                    <img ng-src="{{game.imageUrl}}">
+                    <p>{{game.correctItem}}</p>
+                    <p>{{game.incorrectItem}}</p>
+                </a>
+            </li>
+
+
+        </ul>
+    </ion-content>
+</ion-view>

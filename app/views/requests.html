@@ -1,0 +1,16 @@
+<ion-view title="requests">
+    <ion-content class="padding">
+        <br/>
+        <br/>
+
+        <ul class="list">
+            <li class="item" ng-repeat="request in $parent.requests">
+                <p>{{request.name}}
+                    <button ng-click="accept($index)" class="button button-positive button-block">
+                        accept
+                    </button>
+                </p>
+            </li>
+        </ul>
+    </ion-content>
+</ion-view>

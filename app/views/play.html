@@ -1,0 +1,13 @@
+<ion-view title="play">
+    <ion-content class="padding">
+        <br/>
+        <br/>
+
+        <a class="item item-thumbnail-left" href="/#/play/{{$parent.game._id}}">
+            <img ng-src="{{$parent.game.imageUrl}}">
+            <p>{{$parent.game.correctItem}}</p>
+            <p>{{$parent.game.incorrectItem}}</p>
+        </a>
+
+    </ion-content>
+</ion-view>

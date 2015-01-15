@@ -1,23 +1,24 @@
-<head>
-    <link rel="stylesheet" type="text/css" href="main.css">
-</head>
+<ion-view title="game">
+    <ion-content class="padding">
+        <br/>
+        <br/>
 
-<body>
-    <div class="game-container">
-        <div class="left-drop" ng-drop="true" ng-drop-success="onDrop('left')">
-            <div class="left-item-label">{{leftItem()}}</div>
-        </div>
-        <div class="result">
-            {{resultMessage()}}
-        </div>
-        <div class="image-container" ng-class="imageClass()" ng-drag="true" ng-data="obj" ng-show="showImage" ng-drag-begin="onDragBegin()" ng-drag-finish="onDragEnd()">
-            <img class="image" ng-src="{{imagePath()}}" />
+        <div class="row">
+            <button class="button button-positive button-block">
+                random
+            </button>
         </div>
 
-
-        <div class="right-drop" ng-drop="true" ng-drop-success="onDrop('right')">
-            <div class="right-item-label">{{rightItem()}}</div>
+        <div class="row">
+            <button class="button button-calm button-block" ui-sref="mygames">
+                my games
+            </button>
         </div>
-        <div class="clear" />
-    </div>
-</body>
+
+        <div class="row">
+            <button class="button button-balanced button-block">
+                received games
+            </button>
+        </div>
+    </ion-content>
+</ion-view>

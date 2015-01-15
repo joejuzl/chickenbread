@@ -9,5 +9,9 @@
  */
 angular.module('chickenbreadApp')
   .service('error', function () {
-    // AngularJS will instantiate a singleton by calling "new" on this function
+    	return{
+    		log: function(msg){
+    			console.log(msg);
+    		}
+    	};
   });
