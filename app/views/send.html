@@ -2,6 +2,21 @@
     <ion-content class="padding">
         <br/>
         <br/>
+        <ul class="list">
+            <li class="item" ng-click="onClick($index, $event)" ng-repeat="friend in $parent.friends">
+
+                {{friend.name}}
+               <div ng-show="showButtons[$index]">
+                    <button class="button button-balanced " ng-click="send($index)">
+                        sure?
+                    </button>
+                    <button class="button button-assertive" ng-click="hide($event)">
+                        no </button>
+                </div>
+            </li>
+        </ul>
+
+
 
     </ion-content>
 </ion-view>

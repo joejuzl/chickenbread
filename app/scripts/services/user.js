@@ -8,7 +8,7 @@
  * Service in the chickenbreadApp.
  */
 angular.module('chickenbreadApp')
-    .service('user', function($http, $cookies, error, config) {
+    .service('user', function($http, $cookieStore, error, config) {
 
         function hashCode(str) {
             var hash = 0,
@@ -29,12 +29,15 @@ angular.module('chickenbreadApp')
                         password: hashCode(password)
                     })
                     .success(function(user) {
-                        $cookies.user_id = user._id;
+                        $cookieStore.put('user_id',user._id);
                         callback(user);
                     })
                     .error(function(e) {
                         error.log(e);
                     });
+            },
+            logout: function(){
+                $cookieStore.remove('user_id');
             },
             createUser: function(username, password, callback) {
                 $http.post(config.url + '/api/users', {
@@ -42,7 +45,7 @@ angular.module('chickenbreadApp')
                         password: hashCode(password)
                     })
                     .success(function(user) {
-                        $cookies.user_id = user._id;
+                        $cookieStore.put('user_id',user._id);
                         callback(user);
                     })
                     .error(function(e) {
@@ -50,10 +53,10 @@ angular.module('chickenbreadApp')
                     });
             },
             getId: function(callback) {
-                callback($cookies.user_id);
+                callback($cookieStore.get('user_id'));
             },
             getUserGames: function(callback) {
-                $http.get(config.url + '/api/users/' + $cookies.user_id + '/user_games')
+                $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/user_games')
                     .success(function(games) {
                         callback(games);
                     })
@@ -62,7 +65,7 @@ angular.module('chickenbreadApp')
                     });
             },
             getFriends: function(callback) {
-                $http.get(config.url + '/api/users/' + $cookies.user_id + '/friends')
+                $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/friends')
                     .success(function(friends) {
                         callback(friends);
                     })
@@ -89,7 +92,7 @@ angular.module('chickenbreadApp')
                     });
             },
             addFriend: function(friend_id, callback) {
-                $http.post(config.url + '/api/users/' + $cookies.user_id + '/send_request', {
+                $http.post(config.url + '/api/users/' + $cookieStore.get('user_id') + '/send_request', {
                         friend_id: friend_id
                     })
                     .success(function(user) {
@@ -100,7 +103,7 @@ angular.module('chickenbreadApp')
                     });
             },
             acceptFriend: function(friend_id, callback) {
-                $http.post(config.url + '/api/users/' + $cookies.user_id + '/accept_request', {
+                $http.post(config.url + '/api/users/' + $cookieStore.get('user_id') + '/accept_request', {
                         friend_id: friend_id
                     })
                     .success(function(user) {
@@ -111,7 +114,7 @@ angular.module('chickenbreadApp')
                     });
             },
             getRequests: function(callback) {
-                $http.get(config.url + '/api/users/' + $cookies.user_id + '/received_requests')
+                $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/received_requests')
                     .success(function(requests) {
                         callback(requests);
                     })

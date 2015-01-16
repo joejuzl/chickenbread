@@ -20,9 +20,14 @@ angular
     ])
     .config(function($urlRouterProvider, $stateProvider) {
 
-        $urlRouterProvider.otherwise('/home');
+        $urlRouterProvider.otherwise('/');
 
         $stateProvider
+            .state('start', {
+                url: '/',
+                templateUrl: '',
+                controller: 'StartCtrl'
+            })
             .state('welcome', {
                 url: '/welcome',
                 templateUrl: 'views/welcome.html',
@@ -87,7 +92,12 @@ angular
                 url: '/requests',
                 templateUrl: 'views/requests.html',
                 controller: 'RequestsCtrl'
+            }).state('send', {
+                url: '/send',
+                templateUrl: 'views/send.html',
+                controller: 'SendCtrl'
             });
+
 
     })
     .constant("config", {

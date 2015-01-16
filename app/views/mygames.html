@@ -1,15 +1,25 @@
-<ion-view title="games">
+<ion-view title="my games">
     <ion-content class="padding">
         <br/>
         <br/>
 
         <ul class="list">
-            <li ng-click="onClick($index)" class="item" ng-repeat="game in $parent.games">
-                <a class="item item-thumbnail-left" href="/#/play/{{game._id}}">
-                    <img ng-src="{{game.imageUrl}}">
-                    <p>{{game.correctItem}}</p>
-                    <p>{{game.incorrectItem}}</p>
-                </a>
+            <li ng-click="onClick($index)" class="item item-thumbnail-left" ng-repeat="game in $parent.games">
+
+                <img ng-src="{{game.imageUrl}}">
+                <p>{{game.correctItem}}</p>
+                <p>{{game.incorrectItem}}</p>
+<div ng-show="showButtons[$index]">
+                <button class="button button-balanced " ui-sref="play({game_id: '{{game._id}}' })">
+                    play
+                </button>
+                <button class="button button-energized " ui-sref="send({game_id: '{{game._id}}' })">
+                    send
+                </button>
+                <button class="button button-assertive " ui-sref="game">
+                    delete
+                </button>
+</div>
             </li>
 
 
