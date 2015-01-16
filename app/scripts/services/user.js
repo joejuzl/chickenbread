@@ -29,14 +29,14 @@ angular.module('chickenbreadApp')
                         password: hashCode(password)
                     })
                     .success(function(user) {
-                        $cookieStore.put('user_id',user._id);
+                        $cookieStore.put('user_id', user._id);
                         callback(user);
                     })
                     .error(function(e) {
                         error.log(e);
                     });
             },
-            logout: function(){
+            logout: function() {
                 $cookieStore.remove('user_id');
             },
             createUser: function(username, password, callback) {
@@ -45,7 +45,7 @@ angular.module('chickenbreadApp')
                         password: hashCode(password)
                     })
                     .success(function(user) {
-                        $cookieStore.put('user_id',user._id);
+                        $cookieStore.put('user_id', user._id);
                         callback(user);
                     })
                     .error(function(e) {
@@ -57,6 +57,15 @@ angular.module('chickenbreadApp')
             },
             getUserGames: function(callback) {
                 $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/user_games')
+                    .success(function(games) {
+                        callback(games);
+                    })
+                    .error(function(e) {
+                        error.log(e);
+                    });
+            },
+            getReceivedGames: function(callback) {
+                $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/received_games')
                     .success(function(games) {
                         callback(games);
                     })
@@ -117,6 +126,18 @@ angular.module('chickenbreadApp')
                 $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/received_requests')
                     .success(function(requests) {
                         callback(requests);
+                    })
+                    .error(function(e) {
+                        error.log(e);
+                    });
+            },
+            sendGame: function(friend_id, game_id, callback) {
+                $http.post(config.url + '/api/users/' + $cookieStore.get('user_id') + '/send_game', {
+                        friend_id: friend_id,
+                        game_id: game_id
+                    })
+                    .success(function() {
+                        callback();
                     })
                     .error(function(e) {
                         error.log(e);

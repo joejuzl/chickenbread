@@ -58,6 +58,11 @@ angular
                 templateUrl: 'views/mygames.html',
                 controller: 'MygamesCtrl'
             })
+            .state('receivedgames', {
+                url: '/receivedgames',
+                templateUrl: 'views/receivedgames.html',
+                controller: 'ReceivedgamesCtrl'
+            })
             .state('play', {
                 url: '/play/:game_id',
                 templateUrl: 'views/play.html',
@@ -93,7 +98,7 @@ angular
                 templateUrl: 'views/requests.html',
                 controller: 'RequestsCtrl'
             }).state('send', {
-                url: '/send',
+                url: '/send/:game_id',
                 templateUrl: 'views/send.html',
                 controller: 'SendCtrl'
             });

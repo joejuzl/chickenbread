@@ -8,8 +8,9 @@
  * Controller of the chickenbreadApp
  */
 angular.module('chickenbreadApp')
-    .controller('SendCtrl', function($scope, $stateParams, user) {
-        var id = $stateParams.game_id;
+    .controller('SendCtrl', function($scope, $stateParams, $location, user) {
+        var game_id = $stateParams.game_id;
+        console.log(game_id);
         user.getFriends(function(friendIds) {
             var friends = friendIds;
             $scope.friends = [];
@@ -35,7 +36,9 @@ angular.module('chickenbreadApp')
         };
 
         $scope.send = function(index) {
-            console.log(index);
+            user.sendGame($scope.friends[index]._id,game_id, function(){
+                $location.path('/mygames');
+            });
         };
 
 

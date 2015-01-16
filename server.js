@@ -390,6 +390,28 @@ app.post('/api/users/:user_id/accept_request', function(req, res) {
     );
 });
 
+//add game
+app.post('/api/users/:user_id/send_game', function(req, res) {
+    User.findByIdAndUpdate(
+        req.body.friend_id, {
+            $push: {
+                'receivedGames': req.body.game_id
+            }
+        }, {
+            safe: true,
+            upsert: true
+        },
+        function(err, user) {
+            if (err) {
+                res.send(err);
+            } else {
+                res.send(null);
+            }
+        }
+    );
+
+});
+
 
 
 // listen (start app with node server.js) ======================================
