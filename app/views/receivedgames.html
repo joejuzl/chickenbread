@@ -1,4 +1,10 @@
-<ion-view title="my games">
+<ion-view title="received games">
+    <ion-nav-buttons side="right">
+        <button class="button" ui-sref="home">
+            home
+        </button>
+    </ion-nav-buttons>
+
     <ion-content class="padding">
         <br/>
         <br/>
@@ -9,17 +15,17 @@
                 <img ng-src="{{game.imageUrl}}">
                 <p>{{game.correctItem}}</p>
                 <p>{{game.incorrectItem}}</p>
-<div ng-show="showButtons[$index]">
-                <button class="button button-balanced " ui-sref="play({game_id: '{{game._id}}' })">
-                    play
-                </button>
-                <button class="button button-energized " ui-sref="send({game_id: '{{game._id}}' })">
-                    send
-                </button>
-                <button class="button button-assertive " ui-sref="game">
-                    delete
-                </button>
-</div>
+                <div ng-show="showButtons[$index]">
+                    <button class="button button-balanced " ui-sref="play({game_id: '{{game._id}}' })">
+                        play
+                    </button>
+                    <button class="button button-energized " ui-sref="send({game_id: '{{game._id}}' })">
+                        send
+                    </button>
+                    <button class="button button-assertive " ui-sref="game">
+                        delete
+                    </button>
+                </div>
             </li>
 
 

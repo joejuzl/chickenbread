@@ -1,4 +1,10 @@
 <ion-view title="send">
+    <ion-nav-buttons side="right">
+        <button class="button" ui-sref="home">
+            home
+        </button>
+    </ion-nav-buttons>
+
     <ion-content class="padding">
         <br/>
         <br/>
@@ -6,7 +12,7 @@
             <li class="item" ng-click="onClick($index, $event)" ng-repeat="friend in $parent.friends">
 
                 {{friend.name}}
-               <div ng-show="showButtons[$index]">
+                <div ng-show="showButtons[$index]">
                     <button class="button button-balanced " ng-click="send($index)">
                         sure?
                     </button>
