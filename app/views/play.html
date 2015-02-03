@@ -9,11 +9,15 @@
         <br/>
         <br/>
 
-        <a class="item item-thumbnail-left">
-            <img ng-src="{{$parent.game.imageUrl}}">
-            <p>{{$parent.game.correctItem}}</p>
-            <p>{{$parent.game.incorrectItem}}</p>
-        </a>
+
+        <td-card id="td-card" ng-repeat="game in games" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)" on-partial-swipe="cardPartialSwipe(amt)">
+            <div class="image">
+                <div class="no-text">{{game.correctItem}}</div>
+                <img ng-src="{{game.imageUrl}}">
+                <div class="yes-text">{{game.incorrectItem}}</div>
+            </div>
+        </td-card>
+
 
     </ion-content>
 </ion-view>

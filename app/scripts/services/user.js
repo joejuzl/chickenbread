@@ -1,5 +1,5 @@
 'use strict';
-
+/*global localStorage: false, angular: false */
 /**
  * @ngdoc service
  * @name chickenbreadApp.user
@@ -8,7 +8,7 @@
  * Service in the chickenbreadApp.
  */
 angular.module('chickenbreadApp')
-    .service('user', function($http, $cookieStore, error, config) {
+    .service('user', function($http, error, config) {
 
         function hashCode(str) {
             var hash = 0,
@@ -29,7 +29,7 @@ angular.module('chickenbreadApp')
                         password: hashCode(password)
                     })
                     .success(function(user) {
-                        $cookieStore.put('user_id', user._id);
+                        localStorage.setItem('user_id', user._id);
                         callback(user);
                     })
                     .error(function(e) {
@@ -37,7 +37,7 @@ angular.module('chickenbreadApp')
                     });
             },
             logout: function() {
-                $cookieStore.remove('user_id');
+                localStorage.removeItem('user_id');
             },
             createUser: function(username, password, callback) {
                 $http.post(config.url + '/api/users', {
@@ -45,7 +45,7 @@ angular.module('chickenbreadApp')
                         password: hashCode(password)
                     })
                     .success(function(user) {
-                        $cookieStore.put('user_id', user._id);
+                        localStorage.setItem('user_id', user._id);
                         callback(user);
                     })
                     .error(function(e) {
@@ -53,10 +53,10 @@ angular.module('chickenbreadApp')
                     });
             },
             getId: function(callback) {
-                callback($cookieStore.get('user_id'));
+                callback(localStorage.getItem('user_id'));
             },
             getUserGames: function(callback) {
-                $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/user_games')
+                $http.get(config.url + '/api/users/' + localStorage.getItem('user_id') + '/user_games')
                     .success(function(games) {
                         callback(games);
                     })
@@ -65,7 +65,7 @@ angular.module('chickenbreadApp')
                     });
             },
             getReceivedGames: function(callback) {
-                $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/received_games')
+                $http.get(config.url + '/api/users/' + localStorage.getItem('user_id') + '/received_games')
                     .success(function(games) {
                         callback(games);
                     })
@@ -74,7 +74,7 @@ angular.module('chickenbreadApp')
                     });
             },
             getFriends: function(callback) {
-                $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/friends')
+                $http.get(config.url + '/api/users/' + localStorage.getItem('user_id') + '/friends')
                     .success(function(friends) {
                         callback(friends);
                     })
@@ -101,7 +101,7 @@ angular.module('chickenbreadApp')
                     });
             },
             addFriend: function(friend_id, callback) {
-                $http.post(config.url + '/api/users/' + $cookieStore.get('user_id') + '/send_request', {
+                $http.post(config.url + '/api/users/' + localStorage.getItem('user_id') + '/send_request', {
                         friend_id: friend_id
                     })
                     .success(function(user) {
@@ -112,7 +112,7 @@ angular.module('chickenbreadApp')
                     });
             },
             acceptFriend: function(friend_id, callback) {
-                $http.post(config.url + '/api/users/' + $cookieStore.get('user_id') + '/accept_request', {
+                $http.post(config.url + '/api/users/' + localStorage.getItem('user_id') + '/accept_request', {
                         friend_id: friend_id
                     })
                     .success(function(user) {
@@ -123,7 +123,7 @@ angular.module('chickenbreadApp')
                     });
             },
             getRequests: function(callback) {
-                $http.get(config.url + '/api/users/' + $cookieStore.get('user_id') + '/received_requests')
+                $http.get(config.url + '/api/users/' + localStorage.getItem('user_id') + '/received_requests')
                     .success(function(requests) {
                         callback(requests);
                     })
@@ -132,7 +132,7 @@ angular.module('chickenbreadApp')
                     });
             },
             sendGame: function(friend_id, game_id, callback) {
-                $http.post(config.url + '/api/users/' + $cookieStore.get('user_id') + '/send_game', {
+                $http.post(config.url + '/api/users/' + localStorage.getItem('user_id') + '/send_game', {
                         friend_id: friend_id,
                         game_id: game_id
                     })

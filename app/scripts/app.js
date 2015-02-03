@@ -17,6 +17,7 @@ angular
         'ngRoute',
         'ngSanitize',
         'ngTouch',
+        'ionic.contrib.ui.tinderCards',
     ])
     .config(function($urlRouterProvider, $stateProvider) {
 
@@ -105,9 +106,13 @@ angular
 
 
     })
+
+
     .constant("config", {
-        "url": "http://10.69.50.55:8080",
+        "url": "http://192.168.0.5:8080",
     });
+
+
 
 
 var PhoneGapInit = function() {
