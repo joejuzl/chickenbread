@@ -9,7 +9,8 @@ var mongoose = require('mongoose'); // mongoose for mongodb
 var morgan = require('morgan'); // log requests to the console (express4)
 var bodyParser = require('body-parser'); // pull information from HTML POST (express4)
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
-
+var base64image = require('base64-image');
+var path = require('path');
 // configuration =================
 
 mongoose.connect('mongodb://localhost:27017'); // connect to mongoDB database on modulus.io
@@ -412,6 +413,8 @@ app.post('/api/users/:user_id/send_game', function(req, res) {
 
 });
 
+//upload image
+app.post('/api/image/:filename', base64image('./public/uploads'));
 
 
 // listen (start app with node server.js) ======================================

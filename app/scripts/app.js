@@ -49,12 +49,40 @@ angular
                 templateUrl: 'views/signup.html',
                 controller: 'SignupCtrl'
             })
-            .state('create', {
+
+        .state('create', {
+                abstract: true,
                 url: '/create',
                 templateUrl: 'views/create.html',
                 controller: 'CreateCtrl'
             })
-            .state('mygames', {
+            .state('create.imagetype', {
+                url: '/imagetype',
+                templateUrl: 'views/create-imagetype.html'
+            })
+            .state('create.submiturl', {
+                url: '/submiturl',
+                templateUrl: 'views/create-submiturl.html',
+            })
+            .state('create.viewimage', {
+                url: '/viewimage',
+                templateUrl: 'views/create-viewimage.html',
+            })
+            .state('create.is', {
+                url: '/is',
+                templateUrl: 'views/create-is.html',
+            })
+            .state('create.aint', {
+                url: '/aint',
+                templateUrl: 'views/create-aint.html',
+            })
+            .state('create.submit', {
+                url: '/submit',
+                templateUrl: 'views/create-submit.html',
+            })
+
+
+        .state('mygames', {
                 url: '/mygames',
                 templateUrl: 'views/mygames.html',
                 controller: 'MygamesCtrl'
@@ -102,16 +130,23 @@ angular
                 url: '/send/:game_id',
                 templateUrl: 'views/send.html',
                 controller: 'SendCtrl'
+            }).state('test', {
+                url: '/test',
+                templateUrl: 'views/play.html',
+                controller: 'TestCtrl'
             });
 
 
     })
 
 
-    .constant("config", {
-        "url": "http://192.168.0.5:8080",
-    });
+.constant("config", {
+    "url": "http://192.168.0.5:8080",
+})
 
+.config(['$compileProvider', function($compileProvider) {
+    $compileProvider.imgSrcSanitizationWhitelist(/^\s*(https?|ftp|file|blob|content):|data:image\//);
+}]);
 
 
 
@@ -120,12 +155,12 @@ var PhoneGapInit = function() {
         angular.bootstrap(document, ['chickenbreadApp']);
     };
 
-    if (window.phonegap !== undefined) {
+    if (window.cordova !== undefined) {
         document.addEventListener('deviceready', function() {
             this.boot();
         });
     } else {
-        console.log('PhoneGap not found, booting Angular manually');
+        console.log('Cordova not found, booting Angular manually');
         this.boot();
     }
 };

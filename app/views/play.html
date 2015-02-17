@@ -8,16 +8,15 @@
     <ion-content class="padding">
         <br/>
         <br/>
+        <div>
+            <td-cards>
+                <td-card class="center stack" id="td-card" ng-repeat="game in games" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)" on-partial-swipe="cardPartialSwipe(amt)">
+                    <img class="pic" ng-src="{{game.imageUrl}}">
+                    <div class="no-text">{{game.correctItem}}</div>
+                    <div class="yes-text">{{game.incorrectItem}}</div>
+                </td-card>
 
-
-        <td-card id="td-card" ng-repeat="game in games" on-destroy="cardDestroyed($index)" on-swipe-left="cardSwipedLeft($index)" on-swipe-right="cardSwipedRight($index)" on-partial-swipe="cardPartialSwipe(amt)">
-            <div class="image">
-                <div class="no-text">{{game.correctItem}}</div>
-                <img ng-src="{{game.imageUrl}}">
-                <div class="yes-text">{{game.incorrectItem}}</div>
-            </div>
-        </td-card>
-
-
+            </td-cards>
+        </div>
     </ion-content>
 </ion-view>

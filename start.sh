@@ -1,5 +1,5 @@
 echo "kill stuff"
-sudo pkill -9 mongod &
+sudo pkill mongod &
 pkill node
 wait
 echo "start mongodb"

@@ -10,13 +10,11 @@
     "angular-touch": "*",
     "angular-route": "*",
     "ionic": "1.0.0-beta.14",
-    "ionic-ion-swipe-cards": "*",
     "ionic-contrib-tinder-cards": "*"
   },
   "devDependencies": {
     "angular-mocks": "*",
-    "angular-scenario": "*",
-    "ionic-contrib-tinder-cards": "*"
+    "angular-scenario": "*"
   },
   "appPath": "app"
 }

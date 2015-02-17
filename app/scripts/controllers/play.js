@@ -32,7 +32,7 @@ angular.module('chickenbreadApp')
         };
 
         $scope.cardPartialSwipe = function(index) {
-            console.log('destroyed');
+            //console.log('part');
         };
 
     });
