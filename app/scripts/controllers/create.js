@@ -16,7 +16,7 @@ angular.module('chickenbreadApp')
             aint: null
         };
 
-        console.log('reloaded');
+        $state.go('create.imagetype');
 
         $scope.takePhoto = function() {
             camera.takePicture().then(function(imageData) {
@@ -46,7 +46,7 @@ angular.module('chickenbreadApp')
 
 
         $scope.submitGame = function() {
-            game.addGame($scope.imageUrl, $scope.is, $scope.aint, function(games) {
+            game.addGame($scope.image.url, $scope.image.is, $scope.image.aint, function(games) {
                 console.log(games);
                 if (!games.error) {
                     $location.path('/mygames');

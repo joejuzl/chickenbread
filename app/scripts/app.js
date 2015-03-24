@@ -141,7 +141,7 @@ angular
 
 
 .constant("config", {
-    "url": "http://192.168.0.5:8080",
+    "url": "http://10.22.153.176:8080",
 })
 
 .config(['$compileProvider', function($compileProvider) {

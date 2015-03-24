@@ -10,6 +10,9 @@
 angular.module('chickenbreadApp')
     .factory('camera', ['$q', function($q) {
         var Camera = navigator.camera;
+
+
+
         var getPicture = function(options) {
             var q = $q.defer();
             Camera.getPicture(function(result) {
@@ -24,13 +27,15 @@ angular.module('chickenbreadApp')
         return {
             takePicture: function() {
                 var options = {
-                    sourceType: Camera.PictureSourceType.CAMERA, destinationType: Camera.DestinationType.DATA_URL
+                    sourceType: Camera.PictureSourceType.CAMERA,
+                    destinationType: Camera.DestinationType.DATA_URL
                 };
                 return getPicture(options);
             },
             selectPicture: function() {
                 var options = {
-                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY, destinationType: Camera.DestinationType.DATA_URL
+                    sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                    destinationType: Camera.DestinationType.DATA_URL
                 };
                 return getPicture(options);
             }

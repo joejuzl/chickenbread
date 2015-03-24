@@ -14,7 +14,7 @@ angular.module('chickenbreadApp')
             upload: function(data, callback) {
                 user.getId(function(id) {
                     $http.post(config.url + '/api/image', {
-                            imageUrl: data
+                            imageData: data
                         })
                         .success(function(imageUrl) {
                             callback(imageUrl);
