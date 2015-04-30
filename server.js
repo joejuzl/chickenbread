@@ -9,7 +9,6 @@ var mongoose = require('mongoose'); // mongoose for mongodb
 var morgan = require('morgan'); // log requests to the console (express4)
 var bodyParser = require('body-parser'); // pull information from HTML POST (express4)
 var methodOverride = require('method-override'); // simulate DELETE and PUT (express4)
-var base64image = require('base64-image');
 var path = require('path');
 // configuration =================
 
@@ -20,11 +19,16 @@ app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser.urlencoded({
     'extended': 'true'
 })); // parse application/x-www-form-urlencoded
+
+//used to allow big images to be sent UNSAFE!!!!!!
+app.use(bodyParser({limit: '50mb'}));
+
 app.use(bodyParser.json()); // parse application/json
 app.use(bodyParser.json({
     type: 'application/vnd.api+json'
 })); // parse application/vnd.api+json as json
 app.use(methodOverride());
+
 
 
 // define model =================
@@ -47,6 +51,12 @@ var User = mongoose.model('User', {
     receivedGames: [ObjectId],
     receivedRequests: [ObjectId],
     sentRequests: [ObjectId]
+});
+
+
+//test
+app.get('/test', function(req, res) {
+    res.send({response:'ping'});
 });
 
 //get game
@@ -413,8 +423,28 @@ app.post('/api/users/:user_id/send_game', function(req, res) {
 
 });
 
+function decodeBase64Image(dataString) {
+  var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+    response = {};
+
+  if (matches.length !== 3) {
+    return new Error('Invalid input string');
+  }
+
+  response.type = matches[1];
+  response.data = new Buffer(matches[2], 'base64');
+
+  return response;
+}
+
 //upload image
-app.post('/api/image/:filename', base64image('./public/uploads'));
+app.post('/api/image', function(req, res){
+    console.log(req.body.image_data);
+    //var imageBuffer = decodeBase64Image(req.body.imageData);
+    var url = 'test.jpg';
+    //fs.writeFile(url, imageBuffer.data, function(err) {});
+    res.send(url);
+});
 
 
 // listen (start app with node server.js) ======================================
